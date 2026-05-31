@@ -1,4 +1,4 @@
-# Credit Risk Analytics Dashboard
+# Credit Risk Analytics
 
 An end-to-end credit risk analysis project that identifies default patterns across 307,511 loan applicants using SQL, Python, and PostgreSQL — visualized through an interactive Tableau dashboard.
 

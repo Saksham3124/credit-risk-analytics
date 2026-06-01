@@ -1,152 +1,138 @@
 # Credit Risk Analytics
 
-An end-to-end credit risk analysis project that identifies default patterns across 307,511 loan applicants using SQL, Python, and PostgreSQL — visualized through an interactive Tableau dashboard.
+An end-to-end credit risk analysis project identifying default patterns across 307,511 loan applicants using Python, PostgreSQL, and SQL — visualized through an interactive Tableau dashboard.
+
+**[Live Tableau Dashboard →](https://public.tableau.com/app/profile/kumar.saksham2703/viz/CreditRiskAnalysis_17802306468670/CreditRiskAnalyticsDashboard?publish=yes)**
+
+![Dashboard Preview](Dashboard.png)
 
 ---
 
-## 🔍 Problem Statement
+## 🔍 Business Problem 
 
 Credit default is one of the biggest risks for financial institutions. Identifying which customer segments are most likely to default — and why — enables better lending decisions and risk management.
 
-This project analyzes real-world home credit data to uncover default patterns across demographics, income levels, age groups, and credit bureau activity.
+This project analyzes real-world home credit data to uncover default patterns across demographics, income levels, age groups, and bureau activity.
 
 ---
 
-## 🏗️ Project Architecture
-
-1. Raw Data — Kaggle (Home Credit Default Risk)
-2. PostgreSQL — Data storage and SQL analysis
-3. Python (Pandas) — Data cleaning and feature engineering
-4. Processed Dataset — analytics_customer_final
-5. Tableau Public — Interactive dashboard
-
-
----
-
-## 📊 Dashboard
-
-🔗 [View Live Dashboard on Tableau Public](https://public.tableau.com/app/profile/kumar.saksham2703/viz/CreditRiskAnalysis_17802306468670/CreditRiskAnalyticsDashboard?publish=yes)
-
-[![Dashboard Screenshot](Dashboard.png)](Dashboard.png)
-
----
-
-## 📈 Key Findings
+## 📊 Key Findings
 
 | Metric | Value |
-|---|---|
-| Total Customers Analyzed | 3,07,511 |
+|--------|-------|
+| Total Customers Analyzed | 307,511 |
 | Overall Default Rate | 8.07% |
-| Highest Risk Segment | Under 30 (11.47%) |
-| Lowest Risk Segment | 60+ (4.92%) |
+| Highest Risk Segment | Under 30 — 11.47% |
+| Lowest Risk Segment | 60+ — 4.92% |
 | Male Default Rate | 10.14% |
 | Female Default Rate | 7.00% |
 | Default Rate — 41+ Bureau Records | 13.64% |
 | Default Rate — 0–10 Bureau Records | 8.06% |
+| Males default vs females | 45% higher rate |
+| High bureau activity vs low | 1.7x default rate |
 
 ---
 
-## 🔬 Analysis Layers
+## Project Architecture
 
-### Demographics Analysis
-- Default rate broken down by **gender** and **age group**
-- Younger customers (Under 30) are highest risk despite having less credit history
+**Raw Data** — Kaggle (Home Credit Default Risk)
+
+**Python / Pandas** — Data cleaning, feature engineering, EDA, CSV export
+
+**PostgreSQL / pgAdmin** — Data storage, SQL business analysis, KPI generation
+
+**Tableau Public** — Interactive dashboard and visualizations
+
+---
+
+## SQL Analysis
+
+Business questions answered using PostgreSQL across 307,511 customer records:
+
+**KPI Generation**
+- Overall default rate, average income, average credit amount, average age across full dataset
+
+**Demographic Analysis**
+- Default rate by gender — males (10.14%) vs females (7.00%)
+- Default rate by age bucket — Under 30 highest risk at 11.47%, decreasing steadily to 4.92% for 60+
+
+**Credit Behavior Analysis**
+- Average credit amount and annuity payment by default status
+- Credit-to-income ratio — identifying over-leveraged customers
+- Payment burden ratio — annuity as percentage of income
+
+**Bureau Risk Analysis**
+- Average bureau records, total credit sum, and overdue amount by default status
+- Risk categorization — Low / Medium / High based on overdue amount
+- Default rate correlation with bureau activity levels (0-10 vs 41+ records)
+
+**Advanced Risk Scoring**
+- Top 20 customers ranked by overdue amount
+- Top defaulters ranked by total debt exposure
+- External credit score analysis (EXT_SOURCE_1, 2, 3) by default status
+
+---
+
+## Analysis Layers
+
+**Demographics**
+- Younger customers under 30 are highest risk despite having less credit history
 - Males default at 45% higher rate than females
+- Default risk decreases steadily and predictably with age
 
-### Bureau Records Risk Analysis
-- Customers grouped into bureau risk tiers: Low (0–10) → Moderate → High → Very High → Extreme (41+)
+**Bureau Records**
 - Strong positive correlation between bureau activity and default rate
-- Customers with 41+ bureau records default at nearly **1.7x the rate** of low-activity customers
+- Customers with 41+ bureau records default at 1.7x the rate of low-activity customers
+- High bureau record count is the strongest demographic risk signal in this dataset
 
-### Income Distribution
+**Income Distribution**
 - Majority of customers earn between ₹1,00,000 – ₹1,50,000 annually
 - Income distribution is right-skewed with few high earners
-- Income alone is not a strong predictor of default
-
----
-
-## 🛠️ Tech Stack
-
-| Tool | Usage |
-|---|---|
-| Python (Pandas) | Data cleaning, feature engineering, CSV export |
-| PostgreSQL + pgAdmin | Data storage, SQL queries, transformations |
-| SQL | Aggregations, joins, window functions |
-| Tableau Public | Interactive dashboard and visualizations |
-| JupyterLab | Notebook environment |
+- Income alone is not a strong predictor of default — bureau behavior matters more
 
 ---
 
 ## 📂 Project Structure
 
-```text
-credit-risk-analytics-dashboard/
-│
-├── data/
-│
-├── notebooks/
-│
-├── sql/
-│   ├── kpis/
-│   ├── customer_segmentation/
-│   ├── risk_analysis/
-│   └── advanced_analysis/
-│
-├── Tableau/
-│
-├── Dashboard.png
-│
-└── .gitignore
-```
----
+**notebooks/**
+- EDA.ipynb — data cleaning, feature engineering, exploratory analysis
 
-## ⚙️ Data Setup
+**sql/**
+- KPI_Queries.sql — overall default rate, income, credit KPIs
+- Business_Analysis_queries.sql — demographic and behavioral analysis
+- Advanced_Analytics.sql — risk scoring, overdue ranking, credit ratios
+- validation_queries.sql — data quality checks and null handling
 
-Raw files are not included due to GitHub size limits.
-
-1. Clone the repository
-   `git clone https://github.com/Saksham3124/credit-risk-analytics.git`
-
-2. Download data from [Kaggle — Home Credit Default Risk](https://www.kaggle.com/c/home-credit-default-risk/data)
-
-3. Place files in `data/raw/`:
-   - `application_train.csv`
-   - `bureau.csv`
-   - `previous_application.csv`
-
-4. Run notebooks in order to generate processed data
-
+**Tableau/**
+- Credit_Risk_Analysis.twbx — Tableau workbook
 
 ---
 
-## 🔑 Key SQL Techniques Used
+## Data Setup
 
-```sql
--- Default rate by age group
-SELECT age_group,
-       AVG(target) AS default_rate,
-       COUNT(*) AS total_customers
-FROM analytics_customer
-GROUP BY age_group
-ORDER BY default_rate DESC;
+Raw files not included due to GitHub size limits.
 
--- Bureau records risk bucketing
-SELECT
-  CASE
-    WHEN total_bureau_records BETWEEN 0 AND 10 THEN 'Low'
-    WHEN total_bureau_records BETWEEN 11 AND 20 THEN 'Moderate'
-    WHEN total_bureau_records BETWEEN 21 AND 30 THEN 'High'
-    WHEN total_bureau_records BETWEEN 31 AND 40 THEN 'Very High'
-    ELSE 'Extreme'
-  END AS bureau_risk_group,
-  AVG(target) AS default_rate
-FROM analytics_customer
-GROUP BY bureau_risk_group;
-```
+1. Download dataset from [Kaggle — Home Credit Default Risk](https://www.kaggle.com/c/home-credit-default-risk/data)
+2. Place the following in data/raw/:
+   - application_train.csv
+   - bureau.csv
+   - previous_application.csv
+3. Run notebooks in order to generate analytics_customer_final.csv
+4. Import CSV into PostgreSQL and run sql/ queries
 
 ---
 
-## 👤 Author
+## 🛠️ Tools
 
-**Kumar Saksham**
+- Python — Pandas, data cleaning and feature engineering
+- PostgreSQL + pgAdmin — data storage and SQL analysis
+- Tableau Public — interactive dashboard
+- JupyterLab — notebook environment
+- Git — version control
+
+---
+
+## Author
+
+Kumar Saksham
 [GitHub](https://github.com/Saksham3124) | [Tableau Public](https://public.tableau.com/app/profile/kumar.saksham2703)
